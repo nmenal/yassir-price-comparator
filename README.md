@@ -1,9 +1,7 @@
 # Getting Started with Yassir Price comparator
 
-# Env variables
-
-Create in the repository root directory an .env file 
-and put inside of it `REACT_APP_PRICE_COMPARATOR=http://34.140.52.98/api`
+# Backend repo
+`https://github.com/Hacene06/yassir-price-comparator-backend`
 
 # Install dependencies
 
