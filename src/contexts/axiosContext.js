@@ -5,9 +5,6 @@ import PropTypes from 'prop-types';
 
 export const AxiosContext = createContext(null);
 
-
-// const hardCodedToken = 
-//   'iOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIrMjEzNzc1OTg2MTAzIiwiaWF0IjoxNjM4NDU0OTUxLCJleHAiOjE2NDYyMzA5NTEsInR5cGUiOiJZQV9HT19DT01QQU5ZIn0.8tSon9W3sqHkawP1-9Xh7ZsX6hOFnxQSZBuEEvX_ivk';
 const propTypes = {
   children: PropTypes.string.node,
 };
@@ -24,12 +21,10 @@ const AxiosProvider= ({
     });
 
     clientAxios.interceptors.request.use((config) => {
-      // const token = hardCodedToken;
       const token = localStorage.getItem('token');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
-      // console.log({ config })
       return config;
     });
 

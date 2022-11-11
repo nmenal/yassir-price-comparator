@@ -18,7 +18,7 @@ const propTypes = {
 const Auth = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { isTokenValid, setIsTokenValid } = useAuthData();
+  const { setIsTokenValid } = useAuthData();
 
   const [codeSent, setCodeSent] = useState(false);
   const [codeValidated, setCodeValidated] = useState(false);
@@ -127,10 +127,6 @@ const Auth = () => {
     countDownApi,
     successRequestPin,
   ]);
-
-  useEffect(() => {
-    console.log({ isTokenValid });
-  }, [isTokenValid]);
 
   const handleLogout = ()=> {
     localStorage.removeItem('token');

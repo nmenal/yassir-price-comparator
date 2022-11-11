@@ -18,7 +18,6 @@ const Categories = () => {
   const [categories, setCategories] = useState([]);
 
   const getIcon = (icon)=> {
-    console.log({icon});
     switch (icon) {
       case 'DvrIcon':
         return <DvrIcon/>
@@ -52,18 +51,9 @@ const Categories = () => {
 
   React.useEffect(() => {
     if (successGetCategories) {
-      console.log('categoriesData?.data', categoriesData?.data);
       setCategories(categoriesData?.data?.categories);
     }
-    // setCategories([
-    //   { name: 'Electronics', icon: <DvrIcon /> },
-    //   { name: 'Cosmetics', icon: <SpaIcon /> },
-    //   { name: 'Home appliances', icon: <CoffeeMakerIcon /> },
-    //   { name: 'Home and Garden', icon: <FormatPaintIcon /> },
-    //   { name: 'Communication', icon: <PhoneAndroidIcon /> },
-    //   { name: 'Mode', icon: <CheckroomIcon /> },
-    // ]);
-  },[categoriesData?.data]);
+  }, [categoriesData?.data, successGetCategories]);
 
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
