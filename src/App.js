@@ -43,6 +43,7 @@ function App() {
               <AuthProvider>
                 <div className="App">
                   <Routes>
+                    <Route path="/" element={<Login />} />
                     <Route
                       exact
                       path="/home"
