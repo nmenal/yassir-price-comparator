@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate
+} from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { ThemeProvider as ThemeProviderLegacy } from '@mui/styles';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -8,7 +13,18 @@ import AxiosProvider from './contexts/axiosContext';
 import { AuthProvider } from './contexts/authContext';
 import Main from './pages/Main/Main';
 import Login from './pages/Auth/Login';
+import { useAuthData } from './contexts/authContext';
+import PropTypes from 'prop-types';
+
 import './App.css';
+const propTypes = {
+  Component: PropTypes.node,
+};
+const PrivateRoute = ({ Component }) => {
+  const { isTokenValid } = useAuthData(); 
+  return isTokenValid ? <Component /> : <Navigate to="/login" />;
+};
+PrivateRoute.propTypes = propTypes;
 
 function App() {
   const queryClient = new QueryClient({
@@ -27,7 +43,11 @@ function App() {
               <AuthProvider>
                 <div className="App">
                   <Routes>
-                    <Route path="/" element={<Main />} />
+                    <Route
+                      exact
+                      path="/home"
+                      element={<PrivateRoute Component={Main} />}
+                    />
                     <Route path="/login" element={<Login />} />
                   </Routes>
                 </div>

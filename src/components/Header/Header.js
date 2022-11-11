@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import SearchInput from '../SerachInput/SearchInput';
 import useStyles from './styles';
 import LogoYassir from '../../assests/images/Logo.svg';
+import { useAuthData } from '../../contexts/authContext';
 
 const Header = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { setIsTokenValid } = useAuthData();
 
   const handleLogout = ()=> {
     localStorage.removeItem('token');
-    navigate('/login');
-    console.log('logged out');
+    navigate('/login');   
+    setIsTokenValid(false);
   };
   
   return (

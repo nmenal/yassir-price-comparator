@@ -73,7 +73,7 @@ const Auth = () => {
 
   const handleConfirmPin = () => {
     const body = {
-      phone,
+      phone: `+213${phone}`,
       // pin: submitedData.pin,
       pin: '202211',
     };
@@ -96,7 +96,7 @@ const Auth = () => {
       setCodeValidated(true);
       setIsTokenValid(true);
       localStorage.setItem('token', authData?.data?.token);
-      navigate('/');
+      navigate('/home');
     } else if (errorLogin) {
       setErrorCode(true);
       setIsTokenValid(false);
@@ -130,8 +130,8 @@ const Auth = () => {
 
   const handleLogout = ()=> {
     localStorage.removeItem('token');
+    setIsTokenValid(false);
     navigate('/login');
-    console.log('logged out');
   };
 
   return (
