@@ -9,28 +9,19 @@ import { Grid, Button } from '@mui/material';
 import MapPinAlt from '../../assests/images/MapPinAlt.svg';
 import Close from '../../assests/images/Close.svg';
 import Order from '../../assests/images/Order.svg';
+import { useProducts } from '../../contexts/productsContext';
 
 const containerStyle = {
   height: '60vh',
   width: '100%',
 };
 
-const center = {
-  lat: 36.7538,
-  lng: 3.0588,
-};
-// const arraOfMarkers = [
-//   {
-//     lat: 36.7538,
-//     lng: 3.0588,
-//   },
-//   {
-//     lat: 36.7539,
-//     lng: 3.0589,
-//   },
-// ];
 
 function MyComponent() {
+  const { products, zoom } = useProducts();
+
+  const center = products[0]?.location;
+
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyAxfDunFB6z8fnz2MPjIXy7OZ4wNDqXzEg',
@@ -62,6 +53,10 @@ function MyComponent() {
     console.log({ map });
   }, [map]);
 
+  React.useEffect(() => {
+    console.log({ products });
+  }, [products]);
+
   const divStyle = {
     background: `white`,
     padding: 8,
@@ -75,134 +70,138 @@ function MyComponent() {
           options={{ disableDefaultUI: true }}
           mapContainerStyle={containerStyle}
           center={center}
-          zoom={10}
+          zoom={zoom}
           onLoad={onLoad}
           onUnmount={onUnmount}
         >
           {/* Child components, such as markers, info windows, etc. */}
-          {/* {arraOfMarkers.map((marker, index) => {
-            return ( */}
-          {showInfoWindow && (
-            <OverlayView
-              position={center}
-              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-            >
+          {products && products?.map((product) => {
+            return (
               <>
-                <div style={divStyle}>
-                  <div
-                    style={{
-                      zIndex: 1,
-                      position: 'absolute',
-                      width: '1px',
-                      height: '1px',
-                      top: '1px',
-                      right: '22px',
-                    }}
+                {showInfoWindow && (
+                  <OverlayView
+                    position={product.location}
+                    mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                   >
-                    <img
-                      src={Close}
-                      alt={Close}
-                      onClick={() => handleMarkerClick()}
-                      style={{
-                        alignSelf: 'flex-end',
-                        cursor: 'pointer',
-                      }}
-                    />
-                  </div>
-                  <Grid container spacing={4}>
-                    <Grid item xs={1}>
-                      <img src={Order} alt={Order} />
-                    </Grid>
-                    <Grid item xs={7}>
-                      <p
-                        style={{
-                          fontSize: '12px',
-                          fontWeight: 'bold',
-                          color: 'black',
-                          whiteSpace: 'nowrap',
-                          margin: '5px',
-                          textAlign: 'left',
-                        }}
-                      >
-                        HP laptop 15P 500 HDD
-                      </p>
-                      <p
-                        style={{
-                          fontSize: '12px',
-                          fontWeight: 'bold',
-                          color: 'green',
-                          whiteSpace: 'nowrap',
-                          margin: '5px',
-                          textAlign: 'left',
-                        }}
-                      >
-                        68 000. 00 da
-                      </p>
-                      <p
-                        style={{
-                          fontSize: '12px',
-                          fontWeight: 'bold',
-                          color: 'red',
-                          whiteSpace: 'nowrap',
-                          margin: '5px',
-                          textAlign: 'left',
-                        }}
-                      >
-                        +10 % last month
-                      </p>
-                    </Grid>
-                  </Grid>
-                  <Button
+                    <>
+                      <div style={divStyle}>
+                        <div
+                          style={{
+                            zIndex: 1,
+                            position: 'absolute',
+                            width: '1px',
+                            height: '1px',
+                            top: '1px',
+                            right: '22px',
+                          }}
+                        >
+                          <img
+                            src={Close}
+                            alt={Close}
+                            onClick={() => handleMarkerClick()}
+                            style={{
+                              alignSelf: 'flex-end',
+                              cursor: 'pointer',
+                            }}
+                          />
+                        </div>
+                        <Grid container spacing={4}>
+                          <Grid item xs={1}>
+                            <img src={Order} alt={Order} />
+                          </Grid>
+                          <Grid item xs={7}>
+                            <p
+                              style={{
+                                fontSize: '12px',
+                                fontWeight: 'bold',
+                                color: 'black',
+                                whiteSpace: 'nowrap',
+                                margin: '5px',
+                                textAlign: 'left',
+                              }}
+                            >
+                              {product?.name}
+                            </p>
+                            <p
+                              style={{
+                                fontSize: '12px',
+                                fontWeight: 'bold',
+                                color: 'green',
+                                whiteSpace: 'nowrap',
+                                margin: '5px',
+                                textAlign: 'left',
+                              }}
+                            >
+                              {product?.price} da
+                            </p>
+                            <p
+                              style={{
+                                fontSize: '12px',
+                                fontWeight: 'bold',
+                                color: 'red',
+                                whiteSpace: 'nowrap',
+                                margin: '5px',
+                                textAlign: 'left',
+                              }}
+                            >
+                              +10 % last month
+                            </p>
+                          </Grid>
+                        </Grid>
+                        <Button
+                          style={{
+                            color: 'white',
+                            background: '#ffa908',
+                            borderRadius: '4px',
+                            border: 'none',
+                            boxShadow: 'none',
+                            fontWeight: 'bold',
+                            marginTop: '10px',
+                          }}
+                        >
+                          Order Express
+                        </Button>
+                      </div>
+                    </>
+                  </OverlayView>
+                )}
+                <OverlayView
+                  position={product.location}
+                  mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                >
+                  <button
+                    onClick={() => {
+                      handleMarkerClick();
+                    }}
                     style={{
-                      color: 'white',
-                      background: '#ffa908',
-                      borderRadius: '4px',
+                      background: 'transparent',
                       border: 'none',
-                      boxShadow: 'none',
-                      fontWeight: 'bold',
-                      marginTop: '10px',
+                      cursor: 'pointer',
                     }}
                   >
-                    Order Express
-                  </Button>
-                </div>
+                    <Grid container spacing={4}>
+                      <Grid item xs={1}>
+                        <img src={MapPinAlt} alt={MapPinAlt} />
+                      </Grid>
+                      <Grid item xs={7}>
+                        <p
+                          style={{
+                            fontSize: '12px',
+                            fontWeight: 'bold',
+                            color: '#ffa908',
+                            margin: '20px 5px',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {product?.price}
+                        </p>
+                      </Grid>
+                    </Grid>
+                  </button>
+                </OverlayView>
               </>
-            </OverlayView>
-          )}
-          <OverlayView
-            position={center}
-            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-          >
-            <button
-              onClick={() => {
-                handleMarkerClick();
-              }}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              <Grid container spacing={4}>
-                <Grid item xs={1}>
-                  <img src={MapPinAlt} alt={MapPinAlt} />
-                </Grid>
-                <Grid item xs={7}>
-                  <p
-                    style={{
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      color: '#ffa908',
-                      margin: '20px 5px',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    68 000. 00 da
-                  </p>
-                </Grid>
-              </Grid>
-            </button>
-          </OverlayView>
+            );
+          })}
         </GoogleMap>
       </Grid>
     </Grid>

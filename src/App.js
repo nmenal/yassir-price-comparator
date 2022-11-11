@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate
+  Navigate,
 } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { ThemeProvider as ThemeProviderLegacy } from '@mui/styles';
@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { theme } from './theme';
 import AxiosProvider from './contexts/axiosContext';
 import { AuthProvider } from './contexts/authContext';
+import { ProductsProvider } from './contexts/productsContext';
 import Main from './pages/Main/Main';
 import Login from './pages/Auth/Login';
 import { useAuthData } from './contexts/authContext';
@@ -21,7 +22,7 @@ const propTypes = {
   Component: PropTypes.node,
 };
 const PrivateRoute = ({ Component }) => {
-  const { isTokenValid } = useAuthData(); 
+  const { isTokenValid } = useAuthData();
   return isTokenValid ? <Component /> : <Navigate to="/login" />;
 };
 PrivateRoute.propTypes = propTypes;
@@ -41,17 +42,18 @@ function App() {
           <ThemeProviderLegacy theme={theme}>
             <AxiosProvider>
               <AuthProvider>
-                <div className="App">
-                  <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route
-                      exact
-                      path="/home"
-                      element={<PrivateRoute Component={Main} />}
-                    />
-                    <Route path="/login" element={<Login />} />
-                  </Routes>
-                </div>
+                <ProductsProvider>
+                  <div className="App">
+                    <Routes>
+                      <Route path="/" element={<Login />} />
+                      <Route
+                        path="/home"
+                        element={<PrivateRoute Component={Main} />}
+                      />
+                      <Route path="/login" element={<Login />} />
+                    </Routes>
+                  </div>
+                </ProductsProvider>
               </AuthProvider>
             </AxiosProvider>
           </ThemeProviderLegacy>
