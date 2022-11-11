@@ -3,7 +3,7 @@
 # Env variables
 
 Create in the repository root directory an .env file 
-and put indie of it `REACT_APP_PRICE_COMPARATOR=http://34.140.52.98/api`
+and put inside of it `REACT_APP_PRICE_COMPARATOR=http://34.140.52.98/api`
 
 # Install dependencies
 
